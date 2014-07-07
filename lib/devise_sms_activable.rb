@@ -1,5 +1,4 @@
 require "devise"
-require "devise/sms_sender"
 
 $: << File.expand_path("..", __FILE__)
 
@@ -10,6 +9,8 @@ require 'devise_sms_activable/controllers/helpers'
 require 'devise_sms_activable/rails'
 
 module Devise
+  autoload :SmsSender, 'devise/sms_sender'
+
   mattr_accessor :sms_confirm_within
   @@sms_confirm_within = 2.days
   mattr_accessor :sms_confirmation_keys
