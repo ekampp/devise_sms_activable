@@ -1,4 +1,4 @@
-module DeviseSmsAuthenticable
+module DeviseSmsAuthenticatable
   module Controllers
     module UrlHelpers
       [:path, :url].each do |path_or_url|

@@ -2,11 +2,11 @@ require "devise"
 
 $: << File.expand_path("..", __FILE__)
 
-require 'devise_sms_authenticable/routes'
-require 'devise_sms_authenticable/schema'
-require 'devise_sms_authenticable/controllers/url_helpers'
-require 'devise_sms_authenticable/controllers/helpers'
-require 'devise_sms_authenticable/rails'
+require 'devise_sms_authenticatable/routes'
+require 'devise_sms_authenticatable/schema'
+require 'devise_sms_authenticatable/controllers/url_helpers'
+require 'devise_sms_authenticatable/controllers/helpers'
+require 'devise_sms_authenticatable/rails'
 
 module Devise
   mattr_accessor :sms_confirm_within
@@ -27,4 +27,4 @@ module Devise
   self.sms_sender = "Devise::SmsSender"
 end
 
-Devise.add_module :sms_authenticable, :model => "models/sms_authenticable", :controller => :sms_sessions, :route => :sms_sessions
+Devise.add_module :sms_authenticatable, :model => "models/sms_authenticatable", :controller => :sms_sessions, :route => :sms_sessions

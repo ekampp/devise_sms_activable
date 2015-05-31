@@ -1,4 +1,5 @@
-require "devise_sms_authenticable/hooks"
+require 'devise_sms_authenticatable/hooks'
+require 'strategies/sms_authenticatable'
 
 module Devise
   module Models
@@ -26,7 +27,7 @@ module Devise
     #   User.find(1).sms_confirmed?    # true/false
     #   User.find(1).send_sms_token # manually send token
     #
-    module SmsAuthenticable
+    module SmsAuthenticatable
       extend ActiveSupport::Concern
 
       included do
@@ -51,10 +52,9 @@ module Devise
 
       # Send confirmation token by sms
       def send_sms_token
-        Rails.logger.debug "SEND SMS TOKEN"
         if(self.phone?)
-          generate_sms_token! if self.sms_token.nil?
-          ::Devise.sms_sender.send_sms(self.phone, I18n.t(:"devise.sms_authenticable.sms_body", :sms_token => self.sms_token, :default => self.sms_token))
+          generate_sms_token! if self.sms_token.nil? || !confirmation_sms_period_valid?
+          ::Devise.sms_sender.send_sms(self.phone, I18n.t(:"devise.sms_authenticatable.sms_body", :sms_token => self.sms_token, :default => self.sms_token))
         else
           self.errors.add(:sms_token, :no_phone_associated)
           false
@@ -77,7 +77,7 @@ module Devise
 
       # The message to be shown if the account is inactive.
       def inactive_message
-        !confirmed_sms? ? I18n.t(:"devise.sms_authenticable.unconfirmed_sms") : super
+        !confirmed_sms? ? I18n.t(:"devise.sms_authenticatable.unconfirmed_sms") : super
       end
 
       # If you don't want confirmation to be sent on create, neither a code
@@ -130,7 +130,6 @@ module Devise
         # Generates a new random token for confirmation, and stores the time
         # this token is being generated
         def generate_sms_token
-          Rails.logger.debug "GENERATE SMS TOKEN"
           self.sms_confirmed_at = nil
           self.sms_token = self.class.sms_token
           self.sms_token_sent_at = Time.now.utc

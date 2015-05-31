@@ -1,8 +1,8 @@
-module DeviseSmsAuthenticable
+module DeviseSmsAuthenticatable
   module Generators
     class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path("../../templates", __FILE__)
-      desc "Add DeviseSmsAuthenticable config variables to the Devise initializer and copy DeviseSms locale files to your application."
+      desc "Add DeviseSmsAuthenticatable config variables to the Devise initializer and copy DeviseSms locale files to your application."
       
       # def devise_install
       #   invoke "devise:install"
@@ -13,12 +13,12 @@ module DeviseSmsAuthenticable
         if File.exist?(devise_initializer_path)
           old_content = File.read(devise_initializer_path)
           
-          if old_content.match(Regexp.new(/^\s# ==> Configuration for :sms_authenticable\n/))
+          if old_content.match(Regexp.new(/^\s# ==> Configuration for :sms_authenticatable\n/))
             false
           else
             inject_into_file(devise_initializer_path, :before => "  # ==> Configuration for :confirmable\n") do
 <<-CONTENT
-  # ==> Configuration for :sms_authenticable
+  # ==> Configuration for :sms_authenticatable
   # The period the generated sms token is valid, after
   # this period, the user won't be able to activate.
   # config.sms_confirm_within = 0.days
@@ -41,7 +41,7 @@ CONTENT
       end
       
       def copy_locale
-        copy_file "../../../config/locales/en.yml", "config/locales/devise_sms_authenticable.en.yml"
+        copy_file "../../../config/locales/en.yml", "config/locales/devise_sms_authenticatable.en.yml"
       end
       
       def copy_default_smser

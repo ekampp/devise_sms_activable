@@ -1,7 +1,7 @@
 module DeviseSmsActivable
   module Generators
-    class DeviseSmsAuthenticableGenerator < Rails::Generators::NamedBase
-      namespace "devise_sms_authenticable"
+    class DeviseSmsAuthenticatableGenerator < Rails::Generators::NamedBase
+      namespace "devise_sms_authenticatable"
 
       desc "Add :sms_activable directive in the given model. Also generate migration for ActiveRecord"
 
@@ -11,7 +11,7 @@ module DeviseSmsActivable
 
       def inject_devise_sms_activable_content
         path = File.join("app", "models", "#{file_path}.rb")
-        inject_into_file(path, "sms_authenticable, :", :after => "devise :") if File.exists?(path)
+        inject_into_file(path, "sms_authenticatable, :", :after => "devise :") if File.exists?(path)
       end
 
       hook_for :orm

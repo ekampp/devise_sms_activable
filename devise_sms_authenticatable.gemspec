@@ -1,14 +1,14 @@
 # -*- encoding: utf-8 -*-
 $LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
-require 'devise_sms_authenticable/version'
+require 'devise_sms_authenticatable/version'
 
 Gem::Specification.new do |s|
-  s.name         = "devise_sms_authenticable"
-  s.version      = DeviseSmsAuthenticable::VERSION.dup
+  s.name         = "devise_sms_authenticatable"
+  s.version      = DeviseSmsAuthenticatable::VERSION.dup
   s.platform     = Gem::Platform::RUBY
   s.authors      = ["Rémi Jarasson"]
   s.email        = ["remi.jarasson@gmail.com"]
-  s.homepage     = "https://github.com/artistix/devise_sms_authenticable"
+  s.homepage     = "https://github.com/artistix/devise_sms_authenticatable"
   s.summary      = "An SMS based authentication strategy for Devise"
   s.description  = "It adds support for sending authentication tokens via SMS and sign in with them."
   s.files        = Dir["{app,config,lib}/**/*"] + %w[LICENSE README.rdoc]

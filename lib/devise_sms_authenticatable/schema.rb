@@ -1,7 +1,7 @@
-module DeviseSmsAuthenticable
+module DeviseSmsAuthenticatable
   module Schema
   
-    def sms_authenticable
+    def sms_authenticatable
       apply_devise_schema :phone,   String
       apply_devise_schema :sms_token_token,   String, :limit => 5
       apply_devise_schema :sms_token_sent_at, DateTime
