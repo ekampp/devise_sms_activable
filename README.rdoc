@@ -1,41 +1,41 @@
-= devise_sms_activable
+= devise_sms_authenticable
 
-Devise Sms Activable is a snap-in for Devise that will make any resource activable via SMS.
+Devise Sms Authenticable is a snap-in for Devise that will make any resource authenticable via SMS.
 The user will receive an SMS with a token that can be entered on the site to activate the account.
 Ask the user his phone (and phone confirmation to double check) on registration and the token will be sended automagically.
 
 == Installation for Rails ~> 3.0 and Devise ~> 1.1
 
-Install DeviseSmsActivable gem, it will also install dependencies (such as devise and warden):
+Install DeviseSmsAuthenticable gem, it will also install dependencies (such as devise and warden):
 
-  gem install devise_sms_activable
+  gem install devise_sms_authenticable
 
-Add DeviseSmsActivable to your Gemfile (and Devise if you weren't using them):
+Add DeviseSmsAuthenticable to your Gemfile (and Devise if you weren't using them):
   
   gem 'devise',           '>= 1.1.0'
-  gem 'devise_sms_activable', '~> 0.0.9'
+  gem 'devise_sms_authenticable', '~> 0.0.9'
   
 === Automatic installation
   
-Run the following generator to add DeviseSmsActivable’s configuration option in the Devise configuration file (config/initializers/devise.rb) and the sms sender class in your lib folder:
+Run the following generator to add DeviseSmsAuthenticable’s configuration option in the Devise configuration file (config/initializers/devise.rb) and the sms sender class in your lib folder:
 
-  rails generate devise_sms_activable:install
+  rails generate devise_sms_authenticable:install
   
-When you are done, you are ready to add DeviseSmsActivable to any of your Devise models using the following generator:
+When you are done, you are ready to add DeviseSmsAuthenticable to any of your Devise models using the following generator:
 
-  rails generate devise_sms_activable MODEL
+  rails generate devise_sms_authenticable MODEL
   
-Replace MODEL by the class name you want to add DeviseSmsActivable, like User, Admin, etc. This will add the :sms_activable flag to your model's Devise modules. The generator will also create a migration file (if your ORM support them). Continue reading this file to understand exactly what the generator produces and how to use it.
+Replace MODEL by the class name you want to add DeviseSmsAuthenticable, like User, Admin, etc. This will add the :sms_authenticable flag to your model's Devise modules. The generator will also create a migration file (if your ORM support them). Continue reading this file to understand exactly what the generator produces and how to use it.
 
 == Configuring views
 
 All the views are packaged inside the gem. If you'd like to customize the views, invoke the following generator and it will copy all the views to your application:
 
-  rails generate devise_sms_activable:views
+  rails generate devise_sms_authenticable:views
 
 You can also use the generator to generate scoped views:
 
-  rails generate devise_sms_activable:views users
+  rails generate devise_sms_authenticable:views users
 
 Please refer to {Devise's README}[http://github.com/plataformatec/devise] for more information about views.
 
@@ -50,13 +50,13 @@ You can use the convenience filter <tt>require_sms_activated!</tt> in your contr
 
 == Controller filter
 
-DeviseSmsActivable extends your controllers with a <tt>require_sms_activated!</tt> method. Use it to restrict part of the site to "confirmed users" only
+DeviseSmsAuthenticable extends your controllers with a <tt>require_sms_activated!</tt> method. Use it to restrict part of the site to "confirmed users" only
 
 == I18n
 
-DeviseSmsActivable installs a localizable file in your config/locales folder. 
+DeviseSmsAuthenticable installs a localizable file in your config/locales folder.
 
-== Contributing to devise_sms_activable
+== Contributing to devise_sms_authenticable
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it

@@ -1,12 +1,12 @@
-class Devise::SmsActivationsController < DeviseController
+class Devise::SmsSessionsController < DeviseController
 
-  # GET /resource/sms_activation/new
+  # GET /resource/sms_sessions/new
   def new
     build_resource({})
     render :new
   end
 
-  # POST /resource/sms_activation
+  # POST /resource/sms_sessions
   def create
     self.resource = resource_class.send_sms_token(params[resource_name])
     
@@ -18,12 +18,12 @@ class Devise::SmsActivationsController < DeviseController
     end
   end
   
-  # GET /resource/sms_activation/insert
+  # GET /resource/sms_sessions/insert
   def insert
     build_resource({})
   end
   
-  # GET or POST /resource/sms_activation/consume?sms_token=abcdef
+  # GET or POST /resource/sms_sessions/consume?sms_token=abcdef
   def consume
     self.resource = resource_class.confirm_by_sms_token(params[:sms_token])
 
