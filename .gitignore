@@ -43,3 +43,6 @@ tmtags
 #
 # For vim:
 #*.swp
+
+# Jetbrains IDEA Project
+.idea
