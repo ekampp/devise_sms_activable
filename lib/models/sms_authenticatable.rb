@@ -30,10 +30,10 @@ module Devise
     module SmsAuthenticatable
       extend ActiveSupport::Concern
 
-      # included do
-      #   before_create :generate_sms_token, :if => :sms_confirmation_required?
-      #   after_create  :send_sms_token, :if => :sms_confirmation_required?
-      # end
+      included do
+        before_create :generate_sms_token, :if => :sms_confirmation_required?
+        after_create  :send_sms_token, :if => :sms_confirmation_required?
+      end
 
       # Confirm a user by setting it's sms_confirmed_at to actual time. If the user
       # is already confirmed, add en error to email field
