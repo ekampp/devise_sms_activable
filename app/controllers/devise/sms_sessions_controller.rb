@@ -1,4 +1,5 @@
 class Devise::SmsSessionsController < Devise::SessionsController
+  before_filter :configure_permitted_parameters
 
   # GET /resource/sms_sessions/resend
   def resend
@@ -33,6 +34,10 @@ class Devise::SmsSessionsController < Devise::SessionsController
   
     def build_resource(hash = nil)
       self.resource = resource_class.new
+    end
+
+    def configure_permitted_parameters
+      devise_parameter_sanitizer.for(:sign_in) << :sms_token
     end
 
 end
