@@ -3,7 +3,7 @@ module DeviseSmsActivable
     class DeviseSmsAuthenticatableGenerator < Rails::Generators::NamedBase
       namespace "devise_sms_authenticatable"
 
-      desc "Add :sms_activable directive in the given model. Also generate migration for ActiveRecord"
+      desc "Add :sms_authenticatable directive in the given model. Also generate migration for ActiveRecord"
 
       # def devise_generate_model
       #   invoke "devise", [name]

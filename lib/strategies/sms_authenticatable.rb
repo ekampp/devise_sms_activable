@@ -3,15 +3,23 @@ require 'devise/strategies/authenticatable'
 module Devise
   module Strategies
     # Default strategy for signing in a user, based on their email and password in the database.
-    class SmsAuthenticatable
+    class SmsAuthenticatable < Authenticatable
+      attr_accessor :sms_token
+
       def valid?
-        # params.has_key?(:sms_token)
-        true
+        valid_for_params_auth?
+      end
+
+      def with_authentication_hash(auth_type, auth_values)
+        self.authentication_hash, self.authentication_type = {}, auth_type
+        self.sms_token = auth_values[:sms_token]
+
+        parse_authentication_key_values(auth_values, authentication_keys) &&
+        parse_authentication_key_values(request_values, request_keys)
       end
 
       def authenticate!
-        resource  = sms_token.present? && mapping.to.find_for_database_authentication(authentication_hash)
-        encrypted = false
+        resource  = sms_token.present? && mapping.to.find_for_sms_authentication(authentication_hash)
 
         if validate(resource){ resource.valid_sms_token?(sms_token) }
           remember_me(resource)
@@ -19,7 +27,7 @@ module Devise
           success!(resource)
         end
 
-        fail(:not_found_in_database) unless resource
+        fail(:not_found_in_database)
       end
     end
   end

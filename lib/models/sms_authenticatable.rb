@@ -30,10 +30,10 @@ module Devise
     module SmsAuthenticatable
       extend ActiveSupport::Concern
 
-      included do
-        before_create :generate_sms_token, :if => :sms_confirmation_required?
-        after_create  :resend_sms_token, :if => :sms_confirmation_required?
-      end
+      # included do
+      #   before_create :generate_sms_token, :if => :sms_confirmation_required?
+      #   after_create  :send_sms_token, :if => :sms_confirmation_required?
+      # end
 
       # Confirm a user by setting it's sms_confirmed_at to actual time. If the user
       # is already confirmed, add en error to email field
@@ -53,17 +53,12 @@ module Devise
       # Send confirmation token by sms
       def send_sms_token
         if(self.phone?)
-          generate_sms_token! if self.sms_token.nil? || !confirmation_sms_period_valid?
+          generate_sms_token! if self.sms_token.nil? || !sms_token_period_valid?
           ::Devise.sms_sender.send_sms(self.phone, I18n.t(:"devise.sms_authenticatable.sms_body", :sms_token => self.sms_token, :default => self.sms_token))
         else
           self.errors.add(:sms_token, :no_phone_associated)
           false
         end
-      end
-
-      # Resend sms confirmation token. This method does not need to generate a new token.
-      def resend_sms_token
-        unless_sms_confirmed { send_sms_token }
       end
 
       # Overwrites active? from Devise::Models::Activatable for sms confirmation
@@ -72,7 +67,7 @@ module Devise
       # calculate if the confirm time has not expired for this user.
 
       def active?
-        !sms_confirmation_required? || confirmed_sms? || confirmation_sms_period_valid?
+        !sms_confirmation_required? || confirmed_sms? || sms_token_period_valid?
       end
 
       # The message to be shown if the account is inactive.
@@ -84,6 +79,24 @@ module Devise
       # to be generated, call skip_sms_confirmation!
       def skip_sms_confirmation!
         self.sms_confirmed_at = Time.now
+      end
+
+      def valid_sms_token?(token)
+        sms_token_period_valid? && Devise.secure_compare(self.sms_token, token)
+      end
+
+      # A callback initiated after successfully authenticating. This can be
+      # used to insert your own logic that is only run after the user successfully
+      # authenticates.
+      #
+      # Example:
+      #
+      #   def after_sms_authentication
+      #     self.update_attribute(:invite_code, nil)
+      #   end
+      #
+      def after_sms_authentication
+        confirm_sms! # Confirm account & remove token
       end
 
       protected
@@ -112,7 +125,7 @@ module Devise
         #   # sms_confirm_within = 0.days
         #   confirmation_period_valid?   # will always return false
         #
-        def confirmation_sms_period_valid?
+        def sms_token_period_valid?
           sms_token_sent_at && sms_token_sent_at.utc >= self.class.sms_confirm_within.ago
         end
 
@@ -146,7 +159,7 @@ module Devise
           # Options must contain the user email
           def send_sms_token(attributes={})
             sms_confirmable = find_or_initialize_with_errors(sms_confirmation_keys, attributes, :not_found)
-            sms_confirmable.resend_sms_token if sms_confirmable.persisted?
+            sms_confirmable.send_sms_token if sms_confirmable.persisted?
             sms_confirmable
           end
 
@@ -154,25 +167,29 @@ module Devise
           # If no user is found, returns a new user with an error.
           # If the user is already confirmed, create an error for the user
           # Options must have the sms_confirmation_token
-          def confirm_by_sms_token(sms_token)
-            sms_confirmable = find_or_initialize_with_error_by(:sms_token, sms_token)
-            sms_confirmable.confirm_sms! if sms_confirmable.persisted?
-            sms_confirmable
-          end
+
+          # REMOVED: It's not safe to only login with a 5 chars token
+
+          # def confirm_by_sms_token(sms_token)
+          #   sms_confirmable = find_or_initialize_with_error_by(:sms_token, sms_token)
+          #   sms_confirmable.confirm_sms! if sms_confirmable.persisted?
+          #   sms_confirmable
+          # end
 
           # Generates a small token that can be used conveniently on SMS's.
           # The token is 5 chars long and uppercased.
 
-          def generate_small_token(column)
-            loop do
-              token = Devise.friendly_token[0,5].upcase
-              break token unless to_adapter.find_first({ column => token })
-            end
+          def generate_small_token
+            Devise.friendly_token[0,5].upcase
           end
 
-          # Generate an sms token checking if one does not already exist in the database.
+          # Generate an sms token
           def sms_token
-            generate_small_token(:sms_token)
+            generate_small_token
+          end
+
+          def find_for_sms_authentication(conditions)
+            find_for_authentication(conditions)
           end
 
           Devise::Models.config(self, :sms_confirm_within, :sms_confirmation_keys)

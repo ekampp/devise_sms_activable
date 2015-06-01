@@ -27,4 +27,4 @@ module Devise
   self.sms_sender = "Devise::SmsSender"
 end
 
-Devise.add_module :sms_authenticatable, :model => "models/sms_authenticatable", :controller => :sms_sessions, :route => :sms_sessions
+Devise.add_module :sms_authenticatable, :model => "models/sms_authenticatable", :controller => :sms_sessions, :route => :sms_sessions, :strategy => true

@@ -5,7 +5,7 @@ class DeviseSmsAuthenticatableAddTo<%= table_name.camelize %> < ActiveRecord::Mi
       t.string   :sms_token, :limit => 5
       t.datetime :sms_token_sent_at
       t.datetime :sms_confirmed_at
-      t.index    :sms_token # for sms_activable
+      t.index    :sms_token # for devise_sms_authenticatable
     end
   end
   

@@ -1,38 +1,32 @@
-class Devise::SmsSessionsController < DeviseController
+class Devise::SmsSessionsController < Devise::SessionsController
 
-  # GET /resource/sms_sessions/new
-  def new
+  # GET /resource/sms_sessions/resend
+  def resend
     build_resource({})
-    render :new
+    render :resend
   end
 
-  # POST /resource/sms_sessions
-  def create
+  # POST /resource/sms_sessions/send_sms
+  # Note: send method is not useable, so use send_sms instead
+  def send_sms
     self.resource = resource_class.send_sms_token(params[resource_name])
     
     if resource.errors.empty?
       set_flash_message :notice, :send_token, :phone => self.resource.phone
-      redirect_to new_session_path(resource_name)
+      redirect_to new_sms_sessions_path(resource_name)
     else
-      render :new
+      render :resend
     end
   end
-  
-  # GET /resource/sms_sessions/insert
-  def insert
-    build_resource({})
-  end
-  
-  # GET or POST /resource/sms_sessions/consume?sms_token=abcdef
-  def consume
-    self.resource = resource_class.confirm_by_sms_token(params[:sms_token])
 
-    if resource.errors.empty?
-      set_flash_message :notice, :confirmed
-      sign_in_and_redirect(resource_name, resource)
-    else
-      render :new
-    end
+  # GET /resource/sms_sessions/new
+  def new
+    super
+  end
+
+  # POST /resource/sms_sessions/
+  def create
+    super
   end
   
   protected

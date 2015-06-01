@@ -13,7 +13,7 @@ Install DeviseSmsAuthenticatable gem, it will also install dependencies (such as
 Add DeviseSmsAuthenticatable to your Gemfile (and Devise if you weren't using them):
   
   gem 'devise',           '>= 1.1.0'
-  gem 'devise_sms_authenticatable', '~> 0.0.9'
+  gem 'devise_sms_authenticatable', '~> 0.1.0'
   
 === Automatic installation
   
@@ -41,16 +41,16 @@ Please refer to {Devise's README}[http://github.com/plataformatec/devise] for mo
 
 == Usage
 
-The model is specular to the Devise's own Confirmable model. It only requires the user to supply a valid phone number.
+The model is specular to the Devise's own Database Authenticatable model. It only requires the user to supply a valid phone number.
 
-On registration it will send an SMS with a token to be inserted to complete activation process.
-By default users MUST activate by SMS before entering.
+On registration it will send an SMS with an authentication token.
+This token also confirms user activation.
 If you want something more "relaxed" just override <tt>sms_confirmation_required?</tt> in your model and make it your way.
 You can use the convenience filter <tt>require_sms_activated!</tt> in your controller to block sms-unactive users from specific pages.
 
 == Controller filter
 
-DeviseSmsAuthenticatable extends your controllers with a <tt>require_sms_activated!</tt> method. Use it to restrict part of the site to "confirmed users" only
+DeviseSmsAuthenticatable extends your controllers with a <tt>require_sms_confirmed!</tt> method. Use it to restrict part of the site to "confirmed users" only
 
 == I18n
 
@@ -68,6 +68,7 @@ DeviseSmsAuthenticatable installs a localizable file in your config/locales fold
 
 == Copyright
 
-Copyright (c) 2011 Stefano Valicchia. See LICENSE.txt for
+This gem is a fork of  Stefano Valicchia's devise_sms_activable
+Copyright (c) 2014 Stefano Valicchia. See LICENSE.txt for
 further details.
 

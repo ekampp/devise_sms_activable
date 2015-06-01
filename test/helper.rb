@@ -11,7 +11,7 @@ require 'test/unit'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'devise_sms_activable'
+require 'devise_sms_authenticatable'
 
 class Test::Unit::TestCase
 end
