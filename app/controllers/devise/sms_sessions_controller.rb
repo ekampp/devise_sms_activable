@@ -13,7 +13,7 @@ class Devise::SmsSessionsController < Devise::SessionsController
     
     if resource.errors.empty?
       set_flash_message :notice, :send_token, :phone => self.resource.phone
-      redirect_to new_sms_sessions_path(resource_name)
+      redirect_to new_sms_session_path(resource_name)
     else
       render :resend
     end
