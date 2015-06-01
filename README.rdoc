@@ -1,8 +1,10 @@
 = devise_sms_authenticatable
 
 Devise Sms Authenticatable is a snap-in for Devise that will make any resource authenticatable via SMS.
-The user will receive an SMS with a token that can be entered on the site to activate the account.
+The user will receive an SMS with a token that can be entered on the site to sign in.
 Ask the user his phone (and phone confirmation to double check) on registration and the token will be sended automagically.
+
+This gem enables One Factor Authentication (via SMS) with an OTP.
 
 == Installation for Rails ~> 3.0 and Devise ~> 1.1
 
